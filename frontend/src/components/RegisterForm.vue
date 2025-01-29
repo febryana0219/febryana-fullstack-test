@@ -33,6 +33,7 @@
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
+import { authService } from "../services/authService";
 
 export default defineComponent({
   name: "RegisterForm",
@@ -54,6 +55,7 @@ export default defineComponent({
         return;
       }
       try {
+        await authService.register(name.value, email.value, password.value);
         Swal.fire({
           title: "Success!",
           text: "Registration successful!",
