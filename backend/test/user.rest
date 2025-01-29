@@ -19,20 +19,8 @@ Content-Type: application/json
 
 ### Get Current User (GET) - Protected
 GET http://localhost:3000/api/users/me
-X-ACCESS-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MzgwODIzMjksImV4cCI6MTczODA4NTkyOX0.23rCXFOBpbZ-OfeJJid9j-CbvQf4EqpLtPfvyEU_nTc
-
-# response :
-
-# {
-#   "data": {
-#     "id": 1,
-#     "email": "admin@admin.com",
-#     "name": "Admin",
-#     "created_at": "2025-01-28T16:05:28.677Z",
-#     "updated_at": "2025-01-28T16:37:09.436Z"
-#   }
-# }
+X-ACCESS-TOKEN: {token}
 
 ### Logout User (DELETE) - Protected
 DELETE http://localhost:3000/api/users/me
-X-ACCESS-TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MzgwODIzMjksImV4cCI6MTczODA4NTkyOX0.23rCXFOBpbZ-OfeJJid9j-CbvQf4EqpLtPfvyEU_nTc
+X-ACCESS-TOKEN: {token}
