@@ -1,6 +1,8 @@
 # Setup Project
 
 ## Backend
+Buat database mysql dengan nama **inventory_db**
+
 create .env file
 ```
 DATABASE_URL="mysql://root:@localhost:3306/inventory_db"
