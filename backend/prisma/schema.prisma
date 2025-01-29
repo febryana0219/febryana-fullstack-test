@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique @db.VarChar(100)
+  password    String    @db.VarChar(100)
+  name        String    @db.VarChar(100)
+  token       String?   @db.Text
+  refresh_token String? @db.Text
+  refresh_token_expiry  DateTime?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  // Relasi dengan category yang dibuat dan diperbarui oleh user
+  categories_created Category[] @relation("CategoryCreatedBy")
+  categories_updated Category[] @relation("CategoryUpdatedBy")
+
+  // Relasi dengan item yang dibuat dan diperbarui oleh user
+  items_created Item[] @relation("ItemCreatedBy")
+  items_updated Item[] @relation("ItemUpdatedBy")
+
+  @@map("users")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  created_by  Int?
+  created_at  DateTime  @default(now())
+  updated_by  Int?
+  updated_at  DateTime  @updatedAt
+
+  items Item[]
+
+  // Relasi ke User untuk mendapatkan nama
+  createdBy   User? @relation("CategoryCreatedBy", fields: [created_by], references: [id])
+  updatedBy   User? @relation("CategoryUpdatedBy", fields: [updated_by], references: [id])
+
+  @@map("categories")
+}
+
+model Item {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(100)
+  qty         Int
+  price       Decimal   @db.Decimal(10, 2)
+  unit        String    @db.VarChar(20)
+  category_id Int
+  created_by  Int?
+  updated_by  Int?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  category    Category @relation(fields: [category_id], references: [id])
+
+  // Relasi ke User untuk mendapatkan nama
+  createdBy   User? @relation("ItemCreatedBy", fields: [created_by], references: [id])
+  updatedBy   User? @relation("ItemUpdatedBy", fields: [updated_by], references: [id])
+
+  @@map("items")
+}
