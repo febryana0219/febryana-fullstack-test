@@ -9,6 +9,7 @@ export const useItemsStore = defineStore('items', {
     async fetchItems() {
       try {
         const response = await apiService.getItems();
+
         this.items = response.data.data;
       } catch (error) {
         console.error('Failed to fetch items:', error);
@@ -26,19 +27,9 @@ export const useItemsStore = defineStore('items', {
 
     async updateItem(item: any) {
       try {
-        // Pastikan Anda mengirimkan data yang benar sesuai dengan endpoint update di API
-        const response = await apiService.updateItem(item.id, {
-          name: item.name,
-          qty: item.qty,
-          price: item.price,
-          unit: item.unit,
-          category_id: item.category_id,
-        });
-
-        // Temukan item yang akan diupdate berdasarkan ID
+        const response = await apiService.updateItem(item.id, item.name, item.qty, item.price, item.unit, item.category_id);
         const index = this.items.findIndex((i) => i.id === item.id);
         if (index !== -1) {
-          // Ganti item yang sudah ada dengan data yang terbaru
           this.items[index] = response.data.data;
         }
       } catch (error) {

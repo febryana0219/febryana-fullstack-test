@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import router from "@/router";
+import { apiService } from "@/services/apiService";
 
 export const useAuthStore = defineStore("auth", () => {
   const token = ref<string | null>(localStorage.getItem("token"));
@@ -16,8 +17,15 @@ export const useAuthStore = defineStore("auth", () => {
     router.push("/login");
   };
 
-  const logout = () => {
-    clearToken();
+  const logout = async () => {
+    try {
+      await apiService.logout();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      clearToken();
+      router.push("/login");
+    }
   };
 
   return { token, setToken, clearToken, logout };

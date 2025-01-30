@@ -25,6 +25,9 @@ export const apiService = {
   register(email: string, password: string, name: string) {
     return apiClient.post('/users/register', { email, password, name });
   },
+  logout() {
+    return apiClient.delete('/users/me');
+  },
 
   // Category API
   createCategory(name: string) {
@@ -45,7 +48,8 @@ export const apiService = {
 
   // Item API
   createItem(name: string, qty: number, price: number, unit: string, category_id: number) {
-    return apiClient.post('/items/create', { name, qty, price, unit, category_id });
+    return apiClient.post('/items/create', { name, qty, price: price.toString()
+      , unit, category_id });
   },
   getItems() {
     return apiClient.get('/items');
@@ -53,9 +57,10 @@ export const apiService = {
   getItem(id: number) {
     return apiClient.get(`/items/${id}`);
   },
-  updateItem(id: number, items: any) {
-    return apiClient.put(`/items/${id}`, { name: items.name, qty: items.qty, price: items.price, unit: items.unit, category_id: items.category_id });
-  },
+  updateItem(id: number, name: string, qty: number, price: number, unit: string, category_id: number) {
+    return apiClient.put(`/items/${id}`, { name, qty, price: price.toString()
+      , unit, category_id });
+  },  
   deleteItem(id: number) {
     return apiClient.delete(`/items/${id}`);
   },

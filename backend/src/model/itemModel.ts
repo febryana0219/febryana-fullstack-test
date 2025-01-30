@@ -20,7 +20,7 @@ export type ItemResponse = {
 export type CreateItemRequest = {
   name: string;
   qty: number;
-  price: number;
+  price: Decimal;
   unit: string;
   category_id: number;
   created_by?: number;
@@ -30,7 +30,7 @@ export type UpdateItemRequest = {
   id: number;
   name: string;
   qty: number;
-  price: number;
+  price: Decimal;
   unit: string;
   category_id: number;
   updated_by?: number;
@@ -41,7 +41,7 @@ export function toItemResponse(item: Item & { category?: { name: string } | null
     id: item.id,
     name: item.name,
     qty: item.qty,
-    price: item.price,
+    price: new Decimal(item.price),
     unit: item.unit,
     category_id: item.category_id,
     category_name: item.category?.name || "",

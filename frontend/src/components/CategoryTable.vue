@@ -3,8 +3,8 @@
     <div class="row justify-content-center">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header text-center bg-primary text-white">
-            <h4>Categories</h4>
+          <div class="card-header bg-primary text-white text-center fw-bold">
+            Categories
           </div>
           <div class="card-body">
             <table class="table table-hover table-bordered align-middle">
@@ -18,8 +18,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="category in categories" :key="category.id">
-                  <td>{{ category.id }}</td>
+                <tr v-for="(category, index) in categories" :key="category.id">
+                  <td>{{ index + 1 }}</td>
                   <td>{{ category.name }}</td>
                   <td>{{ category.created_by_name }}</td>
                   <td>{{ category.updated_by_name }}</td>

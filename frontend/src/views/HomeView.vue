@@ -5,7 +5,7 @@
         <div class="card shadow-lg border-0">
           <div class="card-body py-5">
             <h1 class="display-4 fw-bold mb-3 text-primary">
-              Inventory Management System
+              Inventory Apps
             </h1>
             <p class="lead text-muted mb-4">
               Dibuat untuk keperluan technical test

@@ -43,38 +43,27 @@
       <!-- Main Content -->
       <div class="main-content flex-grow-1 p-4">
         <router-view />
-        
+
         <!-- Chart Component Display on Dashboard -->
-        <div v-if="isActive('/dashboard')" class="mt-4">
-          <ChartComponent :itemsData="itemsData" />
-        </div>
+        <ChartComponent v-if="isActive('/dashboard')" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRoute } from 'vue-router';
 import { useAuthStore } from "../store/modules/auth";
-import { useItemsStore } from "../store/modules/items";
-import ChartComponent from "../components/ChartComponent.vue";  // Import ChartComponent
+import ChartComponent from "../components/ChartComponent.vue";
 
 export default defineComponent({
   name: "MenuView",
-  components: {
-    ChartComponent,  // Register ChartComponent
-  },
+  components: { ChartComponent },
   setup() {
     const authStore = useAuthStore();
-    const itemsStore = useItemsStore();
     const isSidebarOpen = ref(true);
     const route = useRoute();
-
-    // Fetch items data on component mount
-    onMounted(async () => {
-      await itemsStore.fetchItems();
-    });
 
     const toggleSidebar = () => {
       isSidebarOpen.value = !isSidebarOpen.value;
@@ -91,10 +80,126 @@ export default defineComponent({
       return route.path.startsWith(path);
     };
 
-    // Get items data from the store
-    const itemsData = computed(() => itemsStore.items); 
-
-    return { isSidebarOpen, toggleSidebar, logout, isActive, itemsData };
+    return { isSidebarOpen, toggleSidebar, logout, isActive };
   },
 });
 </script>
+
+
+<style scoped>
+.dashboard-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-content {
+  display: flex;
+  height: calc(100vh - 56px);
+}
+
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+  background-color: #f8f9fa;
+  color: #343a40;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-right: 1px solid #dee2e6;
+  position: relative;
+}
+
+.sidebar .sidebar-header {
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: #495057;
+}
+
+.sidebar .sidebar-link {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s, padding-left 0.2s, color 0.2s;
+  color: #495057;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar .sidebar-link:hover {
+  background-color: #007bff;
+  color: #ffffff;
+  padding-left: 1rem;
+}
+
+.sidebar .sidebar-link i {
+  font-size: 1.2rem;
+  margin-right: 10px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.sidebar .sidebar-link:hover i {
+  transform: scale(1.2);
+}
+
+.sidebar .sidebar-link.active {
+  background-color: #007bff;
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
+.sidebar.collapsed {
+  transform: translateX(-100%);
+  width: 0;
+  padding: 0;
+}
+
+.main-content {
+  background-color: #ffffff;
+  flex-grow: 1;
+  padding-left: 15px;
+  padding-right: 15px;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+  height: calc(100vh - 56px);
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    padding-top: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .sidebar.collapsed {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .navbar-toggler {
+    z-index: 1001;
+  }
+
+  .sidebar button {
+    position: absolute;
+    bottom: 20px;
+    left: 15px;
+    z-index: 1000;
+  }
+}
+</style>
